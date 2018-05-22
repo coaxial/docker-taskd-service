@@ -1,0 +1,7 @@
+#!/usr/bin/with-contenv sh
+#shellcheck shell=sh
+
+# shellcheck disable=SC1091
+. /scripts/certbot_opts
+
+exec "certbot renew $CERTBOT_OPTS && cp /etc/letsencrypt/live/$TASKD_DOMAIN/* /ssl_certs/"

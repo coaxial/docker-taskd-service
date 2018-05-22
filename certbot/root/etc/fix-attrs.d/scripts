@@ -1,0 +1,2 @@
+/scripts/create_cert  false root  0500  0700
+/scripts/certbot_svc  false root  0500  0700

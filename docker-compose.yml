@@ -1,0 +1,14 @@
+---
+version: '3'
+services:
+  taskserver:
+    build: taskserver/
+    volumes:
+      - taskddata:/var/taskd
+
+  certbot:
+    build: certbot/
+    volumes:
+      - ssl_certs:/etc/letsencrypt
+    ports:
+      - "443:443"
