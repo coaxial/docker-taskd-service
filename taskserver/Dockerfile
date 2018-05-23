@@ -24,12 +24,12 @@ RUN mkdir /tmp/snooze &&\
 
 # install fswatch
 ARG FSWATCH_VERSION=1.11.3
-ARG FSWATCH_DEPS="make gcc musl-dev"
+ARG FSWATCH_DEPS="autoconf automake libtool gettext gettext-dev make g++ texinfo"
 ADD https://github.com/emcrisostomo/fswatch/releases/download/1.11.3/fswatch-$FSWATCH_VERSION.tar.gz /tmp
 RUN mkdir /tmp/fswatch &&\
   tar xzf /tmp/fswatch-$FSWATCH_VERSION.tar.gz -C /tmp/fswatch --strip 1 &&\
   apk --no-cache add $FSWATCH_DEPS &&\
-  cd /tmp/fswatch && make && make install &&\
+  cd /tmp/fswatch && ./configure && make && make install &&\
   rm -rf /tmp/fswatch &&\
   rm -rf /tmp/fswatch-$FSWATCH_VERSION.tar.gz &&\
   apk --no-cache del $FSWATCH_DEPS
