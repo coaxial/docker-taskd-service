@@ -4,8 +4,11 @@ jobs:
     - stage: test
       services:
         - docker
+      addons:
+        apt:
+          packages:
+            - task
       install:
-        - curl -LO https://taskwarrior.org/download/task-2.5.1.tar.gz && sudo tar xzf task-2.5.1.tar.gz -C /usr/bin --strip 1
         - cp taskserver/taskserver.env.example taskserver/taskserver.env
         - echo 'LE_DISABLE=true' >> taskserver/taskserver.env
         - cp taskserver/client.cert.pem.example taskserver/client.cert.pem
