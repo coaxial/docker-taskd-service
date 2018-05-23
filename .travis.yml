@@ -4,13 +4,16 @@ jobs:
     - stage: test
       services:
         - docker
+      addons:
+        apt:
+          packages:
+            - taskwarrior
       install:
         - cp taskserver/taskserver.env.example taskserver/taskserver.env
         - echo 'LE_DISABLE=true' >> taskserver/taskserver.env
         - cp taskserver/client.cert.pem.example taskserver/client.cert.pem
         - cp taskserver/client.key.pem.example taskserver/client.key.pem
         - cp certbot/certbot.env.example certbot/certbot.env
-        - apt install taskwarrior
         - docker up -d
         - export USER_UUID=$(docker-compose exec taskserver ["ls", "-1", "$TASKDDATA/orgs/$TASKD_ORGNAME/users"])
       script: 
