@@ -1,0 +1,26 @@
+---
+jobs:
+  include:
+    - stage: test
+      services:
+        - docker
+      install:
+        - cp taskserver/taskserver.env.example taskserver/taskserver.env
+        - cp taskserver/client.cert.pem.example taskserver/client.cert.pem
+        - cp taskserver/client.key.pem.example taskserver/client.key.pem
+        - cp certbot/certbot.env.example certbot/certbot.env
+        - apt install taskwarrior
+        - docker up -d
+        - export USER_UUID=$(docker-compose exec taskserver ["ls", "-1", "$TASKDDATA/orgs/$TASKD_ORGNAME/users"])
+      script: 
+        - yes 'yes' | task version
+        - cp taskserver/client.cert.pem.example ~/.task
+        - cp taskserver/client.key.pem.example ~/.task
+        - task config taskd.certificate -- ~/.task/client.cert.prm
+        - task config taskd.key -- ~/.task/client.key.prm
+        - task config taskd.server -- localhost:53589
+        - task config taskd.credentials -- My Org/user/$USER_UUID
+      script: yes 'yes' | task sync init
+
+notifications:
+  webhooks: https://hooks.microbadger.com/images/coaxial/s6-snooze/qcgHyFHGkp0Ef8pwvRRexgNaMfA=

@@ -4,9 +4,8 @@ VOLUME /ssl_certs
 ENV LE_EMAIL=admin@example.org
 
 # install s6
-ARG S6_OVERLAY_VERSION=1.21.2.2
+ARG S6_OVERLAY_VERSION=1.21.4.0
 ARG S6_OVERLAY_ARCH=x86
-ARG SUBLIMINAL_VERSION=2.0.5
 ENV S6_LOGGING_SCRIPT ""
 
 ADD https://github.com/just-containers/s6-overlay/releases/download/v$S6_OVERLAY_VERSION/s6-overlay-$S6_OVERLAY_ARCH.tar.gz /tmp

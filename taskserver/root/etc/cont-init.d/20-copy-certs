@@ -1,0 +1,8 @@
+#!/usr/bin/with-contenv sh
+#shellcheck shell=sh
+
+cp /ssl_certs/* "$TASKDDATA"
+cp /client_certs/*.pem "$TASKDDATA"
+mv "$TASKDDATA/domain.key" "$TASKDDATA/server.key.pem"
+mv "$TASKDDATA/domain.crt" "$TASKDDATA/server.cert.pem"
+chown -R taskd:taskd "$TASKDDATA"

@@ -1,0 +1,8 @@
+#!/usr/bin/with-contenv sh
+#shellcheck shell=sh
+
+# this reloads the taskserver every time the certificates are updated
+
+# the command is already quoted, no need to quote the var inside it
+#shellcheck disable=SC2086
+exec fswatch -o "$TASKDDATA"/*.pem | xargs -n 1 kill -1 "$(cat $TASKDDATA/taskd.pid)"

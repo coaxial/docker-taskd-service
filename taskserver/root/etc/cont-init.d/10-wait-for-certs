@@ -1,0 +1,7 @@
+#!/usr/bin/with-contenv sh
+#shellcheck shell=sh
+
+until [ -s /ssl_certs/privkey.pem ]; do
+  printf "Waiting for SSL certificates from Lets Encrypt"
+  sleep 15
+done

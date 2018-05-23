@@ -3,12 +3,20 @@ version: '3'
 services:
   taskserver:
     build: taskserver/
+    env_files:
+      - taskserver/taskserver.env
+    ports:
+      - 53589:53589
     volumes:
       - taskddata:/var/taskd
+      - ./client_certs:/client_certs:ro
+      - ssl_certs:/ssl_certs:ro
 
   certbot:
     build: certbot/
+    env_files:
+      - certbot/certbot.env
     volumes:
-      - ssl_certs:/etc/letsencrypt
+      - ssl_certs:/ssl_certs
     ports:
       - "443:443"
