@@ -3,7 +3,7 @@ version: '3'
 services:
   taskserver:
     build: taskserver/
-    env_files:
+    env_file:
       - taskserver/taskserver.env
     ports:
       - 53589:53589
@@ -14,7 +14,7 @@ services:
 
   certbot:
     build: certbot/
-    env_files:
+    env_file:
       - certbot/certbot.env
     volumes:
       - ssl_certs:/ssl_certs
