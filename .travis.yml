@@ -6,6 +6,7 @@ jobs:
         - docker
       install:
         - cp taskserver/taskserver.env.example taskserver/taskserver.env
+        - echo 'LE_DISABLE=true' >> taskserver/taskserver.env
         - cp taskserver/client.cert.pem.example taskserver/client.cert.pem
         - cp taskserver/client.key.pem.example taskserver/client.key.pem
         - cp certbot/certbot.env.example certbot/certbot.env
