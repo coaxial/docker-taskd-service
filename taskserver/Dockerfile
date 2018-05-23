@@ -27,7 +27,7 @@ ARG FSWATCH_VERSION=1.11.3
 ARG FSWATCH_DEPS="make gcc musl-dev"
 ADD https://github.com/emcrisostomo/fswatch/releases/download/1.11.3/fswatch-$FSWATCH_VERSION.tar.gz /tmp
 RUN mkdir /tmp/fswatch &&\
-  tar xzf fswatch-$FSWATCH_VERSION.tar.gz -C /tmp/fswatch &&\
+  tar xzf /tmp/fswatch-$FSWATCH_VERSION.tar.gz -C /tmp/fswatch &&\
   cd /tmp/fswatch &&\
   apk --no-cache add $FSWATCH_DEPS &&\
   ./configure && make && make install &&\
