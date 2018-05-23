@@ -11,7 +11,7 @@ jobs:
         - cp taskserver/client.cert.pem.example taskserver/client.cert.pem
         - cp taskserver/client.key.pem.example taskserver/client.key.pem
         - cp certbot/certbot.env.example certbot/certbot.env
-        - docker up -d
+        - docker-compose up -d
         - export USER_UUID=$(docker-compose exec taskserver ["ls", "-1", "$TASKDDATA/orgs/$TASKD_ORGNAME/users"])
       script: 
         - yes 'yes' | task-2.5.1/task version
