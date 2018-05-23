@@ -15,13 +15,14 @@ jobs:
         - cp taskserver/client.key.pem.example taskserver/client.key.pem
         - cp certbot/certbot.env.example certbot/certbot.env
         - docker-compose up -d
+      script:
         - export USER_UUID=$(docker-compose exec taskserver ["ls", "-1", "$TASKDDATA/orgs/$TASKD_ORGNAME/users"])
       script: 
-        - yes 'yes' | task version
+        - "yes | task version"
         - cp taskserver/client.cert.pem.example ~/.task
         - cp taskserver/client.key.pem.example ~/.task
         - task config taskd.certificate -- ~/.task/client.cert.prm
         - task config taskd.key -- ~/.task/client.key.prm
         - task config taskd.server -- localhost:53589
         - task config taskd.credentials -- My Org/user/$USER_UUID
-      script: yes 'yes' | task sync init
+        - "yes | task sync init"
