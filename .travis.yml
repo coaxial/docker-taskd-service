@@ -5,7 +5,7 @@ jobs:
       services:
         - docker
       install:
-        - curl -LO https://taskwarrior.org/download/task-2.5.1.tar.gz && tar xzf task-2.5.1.tar.gz
+        - curl -LO https://taskwarrior.org/download/task-2.5.1.tar.gz && sudo tar xzf task-2.5.1.tar.gz -C /usr/bin --strip 1
         - cp taskserver/taskserver.env.example taskserver/taskserver.env
         - echo 'LE_DISABLE=true' >> taskserver/taskserver.env
         - cp taskserver/client.cert.pem.example taskserver/client.cert.pem
@@ -14,11 +14,11 @@ jobs:
         - docker-compose up -d
         - export USER_UUID=$(docker-compose exec taskserver ["ls", "-1", "$TASKDDATA/orgs/$TASKD_ORGNAME/users"])
       script: 
-        - yes 'yes' | task-2.5.1/task version
+        - yes 'yes' | task version
         - cp taskserver/client.cert.pem.example ~/.task
         - cp taskserver/client.key.pem.example ~/.task
-        - task-2.5.1/task config taskd.certificate -- ~/.task/client.cert.prm
-        - task-2.5.1/task config taskd.key -- ~/.task/client.key.prm
-        - task-2.5.1/task config taskd.server -- localhost:53589
-        - task-2.5.1/task config taskd.credentials -- My Org/user/$USER_UUID
-      script: yes 'yes' | task-2.5.1/task sync init
+        - task config taskd.certificate -- ~/.task/client.cert.prm
+        - task config taskd.key -- ~/.task/client.key.prm
+        - task config taskd.server -- localhost:53589
+        - task config taskd.credentials -- My Org/user/$USER_UUID
+      script: yes 'yes' | task sync init
