@@ -20,3 +20,7 @@ services:
       - ssl_certs:/ssl_certs
     ports:
       - "443:443"
+
+volumes:
+  taskddata:
+  ssl_certs:
