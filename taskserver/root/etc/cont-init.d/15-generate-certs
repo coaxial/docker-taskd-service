@@ -12,6 +12,8 @@ if [ "$LE_DISABLE" = "true" ] && [ ! -s /ssl_certs/domain.key ]; then
   ./generate
   mv server.key.pem /ssl_certs/domain.key
   mv server.cert.pem /ssl_certs/domain.crt
+  printf "Copying server certs for client\n"
+  cp ca.cert.pem /server_cert/
   cd /tmp || exit 1
   rm -rf /tmp/taskd /tmp/taskd.tar.gz
   apk --no-cache del curl gnutls-utils
