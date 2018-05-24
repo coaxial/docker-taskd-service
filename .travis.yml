@@ -2,6 +2,7 @@
 jobs:
   include:
     - stage: test
+      cache: ccache
       addons:
         apt:
           packages:
