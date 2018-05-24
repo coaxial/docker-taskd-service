@@ -1,6 +1,8 @@
 #!/usr/bin/with-contenv sh
 #shellcheck shell=sh
 
+ls -clash /
+ls -clash /ssl_certs
 cp /ssl_certs/*.pem "$TASKDDATA"
 cp /client_certs/*.pem "$TASKDDATA"
 mv "$TASKDDATA/domain.key" "$TASKDDATA/server.key.pem"
