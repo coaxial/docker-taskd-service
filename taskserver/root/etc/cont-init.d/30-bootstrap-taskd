@@ -19,3 +19,5 @@ else
   taskd config --force -- server.crl  "$TASKDDATA"/server.crl.pem
   taskd config --force -- ca.cert     "$TASKDDATA"/ca.cert.pem
 fi
+
+taskd diagnostics --data "$TASKDDATA"

@@ -6,7 +6,7 @@ services:
     env_file:
       - taskserver/taskserver.env
     ports:
-      - 53589:53589
+      - "53589:53589"
     volumes:
       - taskddata:/var/taskd
       - ./taskserver/client_certs:/client_certs:ro
