@@ -32,8 +32,8 @@ jobs:
         - printf "new user UUID is $USER_UUID"
         - yes | task version
         - ls -clash ~/.task
-        - cp taskserver/client_certs/client.cert.pem.example ~/.task
-        - cp taskserver/client_certs/client.key.pem.example ~/.task
+        - cp taskserver/client_certs/client.cert.pem.example ~/.task/client.cert.pem
+        - cp taskserver/client_certs/client.key.pem.example ~/.task/client.key.pem
         - ls -clash taskserver/server_certs/
         - cp taskserver/server_certs/ca.cert.pem ~/.task/ca.cert.pem
         - ls -clash ~/.task
