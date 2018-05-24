@@ -1,5 +1,6 @@
 #!/usr/bin/with-contenv sh
 #shellcheck shell=sh
 
+cat "$TASKDDATA/config"
 chown -R taskd:taskd "$TASKDDATA"
 chmod -R 600 "$TASKDDATA"
