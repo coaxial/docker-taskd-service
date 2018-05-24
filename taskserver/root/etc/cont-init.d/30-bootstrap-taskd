@@ -6,6 +6,7 @@ if [ -s "$TASKDDATA/config" ]; then
   printf "$TASKDDATA/config file found, skipping bootstrap\n"
 else
   printf "$TASKDDATA/config file not found, bootstrapping taskd\n"
+  ls -clash "$TASKDDATA"
   taskd init
   touch "$TASKDDATA/taskd.log"
   touch "$TASKDDATA/taskd.pid"
