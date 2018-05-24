@@ -42,6 +42,7 @@ jobs:
         - yes | task config taskd.ca -- ~/.task/ca.cert.pem
         - yes | task config taskd.server -- localhost:53589
         - yes | task config taskd.credentials -- My Org/user/$USER_UUID
+        - ls -clash ~/.task
         - yes | task sync init
       after_script:
         - docker-compose logs
