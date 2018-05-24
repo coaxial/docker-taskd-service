@@ -6,7 +6,6 @@ if [ -s "$TASKDDATA/config" ]; then
   printf "$TASKDDATA/config file found, skipping bootstrap\n"
 else
   printf "$TASKDDATA/config file not found, bootstrapping taskd\n"
-  ls -clash "$TASKDDATA"
   taskd init
   touch "$TASKDDATA/taskd.log"
   touch "$TASKDDATA/taskd.pid"
@@ -19,6 +18,4 @@ else
   taskd config --force -- server.cert "$TASKDDATA"/server.cert.pem
   taskd config --force -- server.crl  "$TASKDDATA"/server.crl.pem
   taskd config --force -- ca.cert     "$TASKDDATA"/ca.cert.pem
-  printf "Restarting taskd\n"
-  kill -1 "$(cat "$TASKDDATA/taskd.pid")"
 fi
