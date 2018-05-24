@@ -14,6 +14,7 @@ if [ "$LE_DISABLE" = "true" ] && [ ! -s /ssl_certs/domain.key ]; then
   mv server.cert.pem /ssl_certs/domain.crt
   printf "Copying server certs for client\n"
   cp ca.cert.pem /server_certs/ca.cert.pem
+  cp ca.cert.pem /ssl_certs/ca.cert.pem
   chmod 644 /server_certs/ca.cert.pem
   cd /tmp || exit 1
   rm -rf /tmp/taskd /tmp/taskd.tar.gz
