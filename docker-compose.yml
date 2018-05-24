@@ -10,7 +10,7 @@ services:
     volumes:
       - taskddata:/var/taskd
       - ./client_certs:/client_certs:ro
-      - ssl_certs:/ssl_certs:ro
+      - ssl_certs:/ssl_certs
 
   certbot:
     build: certbot/

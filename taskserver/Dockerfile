@@ -36,4 +36,6 @@ RUN mkdir /tmp/fswatch &&\
 
 COPY root/ /
 
+VOLUME /ssl_certs /client_certs
+
 ENTRYPOINT ["/init"]

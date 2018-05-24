@@ -2,7 +2,7 @@
 #shellcheck shell=sh
 
 if [ "$LE_DISABLE" = "true" ]; then
-  printf "Lets Encrypt is disabled, not doing anything"
+  printf "Lets Encrypt is disabled, not doing anything\n"
 else
   # shellcheck disable=SC1091
   . /scripts/certbot_opts

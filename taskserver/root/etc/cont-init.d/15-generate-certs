@@ -1,11 +1,13 @@
 #!/usr/bin/with-contenv sh
 #shellcheck shell=sh
 
-if [ "$LE_DISABLE" = "true" ]; then
-  printf "Generating self-signed server certs"
+if [ "$LE_DISABLE" = "true" ] && [ -s /ssl_certs/domain.key ]; then
+  printf "Generating self-signed server certs\n"
   apk --no-cache add curl gnutls-utils
   cd /ssl_certs || exit 1
+  curl -sSLO https://raw.githubusercontent.com/GothenburgBitFactory/taskserver/1.2.0/pki/vars
   curl -sSL https://raw.githubusercontent.com/GothenburgBitFactory/taskserver/1.2.0/pki/generate.server | sh
+  rm vars
   mv /ssl_certs/server.key.pem /ssl_certs/domain.key
   mv /ssl_certs/server.cert.pem /ssl_certs/domain.crt
   apk --no-cache del curl gnutls-utils
