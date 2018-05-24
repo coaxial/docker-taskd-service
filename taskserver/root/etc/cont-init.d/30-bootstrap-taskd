@@ -7,7 +7,7 @@ if [ -s "$TASKDDATA/config" ]; then
 else
   printf "$TASKDDATA/config file not found, bootstrapping taskd"
   taskd add org "$TASKD_ORGNAME"
-  taskd add user "$TASKD_ORGNAME" "$TASKD_USERNAME" | grep -oP '[a-f0-9\-]{36}'
+  taskd add user "$TASKD_ORGNAME" "$TASKD_USERNAME" | grep -oE '[a-f0-9\-]{36}'
   taskd config --force -- server      "$TASKD_DOMAIN:53589"
   taskd config --force -- log         "$TASKDDATA"/taskd.log
   taskd config --force -- pid.file    "$TASKDDATA"/taskd.pid

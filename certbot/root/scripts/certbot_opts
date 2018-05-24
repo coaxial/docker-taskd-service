@@ -1,10 +1,10 @@
 #!/usr/bin/with-contenv sh
 #shellcheck shell=sh
 
-CERTBOT_OPTS="--standalone --preferred-challenges tls-sni  --email ${LE_EMAIL} --agree-tos"
-
 if [ "$LE_TESTING" = "true" ]; then
   CERTBOT_OPTS="$CERTBOT_OPTS --staging"
 fi
+
+CERTBOT_OPTS="--standalone --preferred-challenges tls-sni  --email ${LE_EMAIL} --agree-tos -d $TASKD_DOMAIN"
 
 export CERTBOT_OPTS

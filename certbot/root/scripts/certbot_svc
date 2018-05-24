@@ -1,7 +1,12 @@
 #!/usr/bin/with-contenv sh
 #shellcheck shell=sh
 
-# shellcheck disable=SC1091
-. /scripts/certbot_opts
+if [ "$LE_DISABLE" = "true" ]; then
+  printf "Lets Encrypt is disabled, not doing anything"
+  sleep 86400
+else
+  # shellcheck disable=SC1091
+  . /scripts/certbot_opts
 
-exec "certbot renew $CERTBOT_OPTS && cp /etc/letsencrypt/live/$TASKD_DOMAIN/* /ssl_certs/"
+  exec "certbot renew $CERTBOT_OPTS && cp /etc/letsencrypt/live/$TASKD_DOMAIN/* /ssl_certs/"
+fi
