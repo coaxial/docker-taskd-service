@@ -1,7 +1,7 @@
 #!/usr/bin/with-contenv sh
 #shellcheck shell=sh
 
-if [ "$LE_DISABLE" = "true" ] && [ -s /ssl_certs/domain.key ]; then
+if [ "$LE_DISABLE" = "true" ] && [ ! -s /ssl_certs/domain.key ]; then
   printf "Generating self-signed server certs\n"
   apk --no-cache add curl gnutls-utils
   cd /ssl_certs || exit 1
