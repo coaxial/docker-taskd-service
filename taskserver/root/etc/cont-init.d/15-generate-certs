@@ -8,10 +8,11 @@ if [ "$LE_DISABLE" = "true" ] && [ ! -s /ssl_certs/domain.key ]; then
   curl -sSL https://api.github.com/repos/gothenburgbitfactory/taskserver/tarball/master -o /tmp/taskd.tar.gz
   mkdir /tmp/taskd
   tar xzf taskd.tar.gz -C /tmp/taskd --strip 1
+  cd taskd/pki || exit 1
   ./generate
   mv server.key.pem /ssl_certs/domain.key
   mv server.cert.pem /ssl_certs/domain.crt
-  cd .. || exit 1
+  cd /tmp || exit 1
   rm -rf /tmp/taskd /tmp/taskd.tar.gz
   apk --no-cache del curl gnutls-utils
 fi
