@@ -14,6 +14,7 @@ jobs:
         - cp certbot/certbot.env.example certbot/certbot.env
         - echo 'LE_DISABLE=true' >> taskserver/taskserver.env
         - echo 'LE_DISABLE=true' >> certbot/certbot.env
+        - mkdir taskserver/server_cert
         - cp taskserver/client_certs/client.cert.pem.example taskserver/client_certs/client.cert.pem
         - cp taskserver/client_certs/client.key.pem.example taskserver/client_certs/client.key.pem
         - docker-compose up -d
