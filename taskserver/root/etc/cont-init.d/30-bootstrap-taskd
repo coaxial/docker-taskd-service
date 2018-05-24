@@ -20,4 +20,5 @@ else
   taskd config --force -- ca.cert     "$TASKDDATA"/ca.cert.pem
 fi
 
-taskd diagnostics --data "$TASKDDATA"
+taskd diagnostics
+ls -clash "$TASKDDATA"
