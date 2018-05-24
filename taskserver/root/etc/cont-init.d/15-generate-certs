@@ -6,6 +6,7 @@ if [ "$LE_DISABLE" = "true" ] && [ ! -s /ssl_certs/domain.key ]; then
   apk --no-cache add curl gnutls-utils
   cd /tmp || exit 1
   curl -sSL https://api.github.com/repos/gothenburgbitfactory/taskserver/tarball/master -o /tmp/taskd.tar.gz
+  mkdir /tmp/taskd
   tar xzf taskd.tar.gz -C /tmp/taskd --strip 1
   ./generate
   mv server.key.pem /ssl_certs/domain.key
