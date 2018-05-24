@@ -4,19 +4,22 @@
 if [ "$LE_DISABLE" = "true" ] && [ ! -s /ssl_certs/domain.key ]; then
   printf "Generating self-signed server certs\n"
   apk --no-cache add curl gnutls-utils
+  # get certificate generation scripts from repo
   cd /tmp || exit 1
   curl -sSL https://api.github.com/repos/gothenburgbitfactory/taskserver/tarball/master -o /tmp/taskd.tar.gz
   mkdir /tmp/taskd
   tar xzf taskd.tar.gz -C /tmp/taskd --strip 1
   cd taskd/pki || exit 1
+  # generate self-signed certs
   ./generate
+  # move generated certs in place
   mv server.key.pem /ssl_certs/domain.key
   mv server.cert.pem /ssl_certs/domain.crt
-  printf "Copying server certs for client\n"
   cp ca.cert.pem /server_certs/ca.cert.pem
   cp ca.cert.pem "$TASKDDATA"/ca.cert.pem
   chmod 644 /server_certs/ca.cert.pem
   cd /tmp || exit 1
+  # cleanup
   rm -rf /tmp/taskd /tmp/taskd.tar.gz
   apk --no-cache del curl gnutls-utils
 fi
