@@ -9,6 +9,8 @@ else
   taskd init
   touch "$TASKDDATA/taskd.log"
   touch "$TASKDDATA/taskd.pid"
+  chown taskd "$TASKD_ORGNAME/taskd.log"
+  chown taskd "$TASKD_ORGNAME/taskd.pid"
   taskd add org "$TASKD_ORGNAME"
   taskd add user "$TASKD_ORGNAME" "$TASKD_USERNAME" | grep -oE '[a-f0-9\-]{36}'
   taskd config --force -- server      "$TASKD_DOMAIN:53589"
@@ -19,3 +21,6 @@ else
   taskd config --force -- server.crl  "$TASKDDATA"/server.crl.pem
   taskd config --force -- ca.cert     "$TASKDDATA"/ca.cert.pem
 fi
+
+taskd diagnostics
+ls -clash "$TASKDDATA"
