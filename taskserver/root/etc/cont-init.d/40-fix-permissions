@@ -1,0 +1,5 @@
+#!/usr/bin/with-contenv sh
+#shellcheck shell=sh
+
+chown -R taskd:taskd "$TASKDDATA"
+chmod -R 600 "$TASKDDATA"
