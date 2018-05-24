@@ -19,9 +19,14 @@ jobs:
         - curl -L https://taskwarrior.org/download/task-2.5.1.tar.gz -o /tmp/task.tar.gz
         - mkdir /tmp/task
         - tar xzf /tmp/task.tar.gz -C /tmp/task --strip 1
-        - cd /tmp/task && cmake -DCMAKE_BUILD_TYPE=release . && make && sudo make install && cd -
+        - cd /tmp/task
+        - cmake -DCMAKE_BUILD_TYPE=release .
+        - make
+        - sudo make install
+        - cd -
       script:
         - sleep 15
+        - docker-compose exec taskserver env
         - export USER_UUID=$(docker-compose exec taskserver '/usr/bin/with-contenv sh ls -1 $TASKDDATA/orgs/$TASKD_ORGNAME/users')
         - printf "new user UUID is $USER_UUID"
         - yes | task version
