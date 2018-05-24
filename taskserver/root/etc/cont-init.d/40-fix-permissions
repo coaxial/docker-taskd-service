@@ -3,3 +3,6 @@
 
 chown -R taskd:taskd "$TASKDDATA"
 chmod -R 600 "$TASKDDATA"
+
+taskd diagnostics
+ls -clash "$TASKDDATA"
