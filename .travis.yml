@@ -27,7 +27,7 @@ jobs:
         - sudo make install
         - cd -
       script:
-        - sleep 15
+        - sleep 90
         - docker-compose exec taskserver sh -c 'echo $TASKDDATA'
         - export USER_UUID=$(docker-compose exec taskserver sh -c 'ls -1 "$TASKDDATA/orgs/$TASKD_ORGNAME/users"')
         - printf "new user UUID is $USER_UUID"
