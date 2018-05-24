@@ -15,7 +15,6 @@ if [ "$LE_DISABLE" = "true" ] && [ ! -s /ssl_certs/domain.key ]; then
   printf "Copying server certs for client\n"
   cp ca.cert.pem /server_certs/ca.cert.pem
   chmod 644 /server_certs/ca.cert.pem
-  ls -clash /server_certs/
   cd /tmp || exit 1
   rm -rf /tmp/taskd /tmp/taskd.tar.gz
   apk --no-cache del curl gnutls-utils
