@@ -34,7 +34,8 @@ jobs:
         - yes | task version
         - cp taskserver/client_certs/client.cert.pem.example ~/.task
         - cp taskserver/client_certs/client.key.pem.example ~/.task
-        - cp taskserver/server_certs/ca.cert.pem ~/.task
+        - ls -clash taskserver/server_certs/
+        - cp taskserver/server_certs/ca.cert.pem ~/.task/ca.cert.pem
         - yes | task config taskd.certificate -- ~/.task/client.cert.pem
         - yes | task config taskd.key -- ~/.task/client.key.pem
         - yes | task config taskd.ca -- ~/.task/ca.cert.pem
