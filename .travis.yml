@@ -14,9 +14,9 @@ jobs:
         - cp certbot/certbot.env.example certbot/certbot.env
         - echo 'LE_DISABLE=true' >> taskserver/taskserver.env
         - echo 'LE_DISABLE=true' >> certbot/certbot.env
-        - mkdir taskserver/server_certs
-        - cp taskserver/client_certs/client.cert.pem.example taskserver/client_certs/client.cert.pem
-        - cp taskserver/client_certs/client.key.pem.example taskserver/client_certs/client.key.pem
+        # - mkdir taskserver/server_certs
+        # - cp taskserver/client_certs/client.cert.pem.example taskserver/client_certs/client.cert.pem
+        # - cp taskserver/client_certs/client.key.pem.example taskserver/client_certs/client.key.pem
         - docker-compose up -d
         - curl -L https://taskwarrior.org/download/task-2.5.1.tar.gz -o /tmp/task.tar.gz
         - mkdir /tmp/task
@@ -31,10 +31,12 @@ jobs:
         - export USER_UUID=$(docker-compose exec taskserver sh -c 'ls -1 "$TASKDDATA/orgs/$TASKD_ORGNAME/users"')
         - printf "new user UUID is $USER_UUID"
         - yes | task version
-        - cp taskserver/client_certs/client.cert.pem.example ~/.task/client.cert.pem
-        - cp taskserver/client_certs/client.key.pem.example ~/.task/client.key.pem
+        # - cp taskserver/client_certs/client.cert.pem.example ~/.task/client.cert.pem
+        # - cp taskserver/client_certs/client.key.pem.example ~/.task/client.key.pem
         - ls -clash taskserver/server_certs/
-        - cp taskserver/server_certs/ca.cert.pem ~/.task/ca.cert.pem
+        - cp taskserver/client_certs/client.cert.pem ~/.task/client.cert.pem
+        - cp taskserver/client_certs/client.key.pem ~/.task/client.key.pem
+        - cp taskserver/client_certs/ca.cert.pem ~/.task/ca.cert.pem
         - ls -clash ~/.task
         - yes | task config taskd.certificate -- ~/.task/client.cert.pem
         - yes | task config taskd.key -- ~/.task/client.key.pem

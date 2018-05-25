@@ -1,0 +1,6 @@
+#!/usr/bin/with-contenv sh
+#shellcheck shell=sh
+
+s6-setuidgid taskd taskd diagnostics
+# taskd diagnostics
+ls -clash "$TASKDDATA"

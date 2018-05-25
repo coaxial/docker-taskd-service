@@ -13,11 +13,12 @@ if [ "$LE_DISABLE" = "true" ] && [ ! -s /ssl_certs/domain.key ]; then
   # generate self-signed certs
   ./generate
   # move generated certs in place
-  mv server.key.pem /ssl_certs/domain.key
-  mv server.cert.pem /ssl_certs/domain.crt
-  cp ca.cert.pem /server_certs/ca.cert.pem
-  cp ca.cert.pem "$TASKDDATA"/ca.cert.pem
-  chmod 644 /server_certs/ca.cert.pem
+  mv ./*.pem /ssl_certs/
+  mv /ssl_certs/server.key.pem /ssl_certs/domain.key
+  mv /ssl_certs/server.cert.pem /ssl_certs/domain.crt
+  cp /ssl_certs/client.cert.pem /client_certs/client.cert.pem
+  cp /ssl_certs/client.key.pem /client_certs/client.key.pem
+  cp /ssl_certs/ca.cert.pem /client_certs/ca.cert.pem
   cd /tmp || exit 1
   # cleanup
   rm -rf /tmp/taskd /tmp/taskd.tar.gz

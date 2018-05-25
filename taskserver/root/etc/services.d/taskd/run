@@ -1,4 +1,5 @@
 #!/usr/bin/with-contenv sh
 #shellcheck shell=sh
 
-exec taskd server --debug --debug.tls=2
+exec taskd server --debug --debug.tls=2 # --data "$TASKDDATA"
+# exec s6-setuidgid taskd taskd server --debug --debug.tls=2 --data "$TASKDDATA"

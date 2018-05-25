@@ -9,8 +9,8 @@ else
   taskd init
   touch "$TASKDDATA/taskd.log"
   touch "$TASKDDATA/taskd.pid"
-  chown taskd "$TASKD_ORGNAME/taskd.log"
-  chown taskd "$TASKD_ORGNAME/taskd.pid"
+  chown taskd "$TASKDDATA/taskd.log"
+  chown taskd "$TASKDDATA/taskd.pid"
   taskd add org "$TASKD_ORGNAME"
   taskd add user "$TASKD_ORGNAME" "$TASKD_USERNAME" | grep -oE '[a-f0-9\-]{36}'
   taskd config --force server      "$TASKD_DOMAIN:53589"

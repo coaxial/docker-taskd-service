@@ -1,10 +1,7 @@
 #!/usr/bin/with-contenv sh
 #shellcheck shell=sh
 
-chown -R taskd:taskd "$TASKDDATA"
-chmod -R 600 "$TASKDDATA"
-
-ls -clash "$TASKDDATA"
-cat "$TASKDDATA/config"
-taskd diagnostics
-ls -clash "$TASKDDATA"
+# chown -R taskd:taskd "$TASKDDATA"
+# chmod 600 "$TASKDDATA"/*
+# docker-compose can't read them otherwise when building
+chmod +r /client_certs/*
