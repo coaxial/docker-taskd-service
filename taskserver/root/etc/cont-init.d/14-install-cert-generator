@@ -1,0 +1,10 @@
+#!/usr/bin/with-contenv sh
+#shellsheck shell=sh
+
+
+printf "Installing the certificate generator\n"
+mkdir -p /opt/src/taskd
+apk --no-cache add curl gnutls-utils
+curl -sSL https://api.github.com/repos/gothenburgbitfactory/taskserver/tarball/master -o /tmp/taskd.tar.gz
+mkdir /opt/src/taskd
+tar xzf /tmp/taskd.tar.gz -C /opt/src/taskd --strip 1

@@ -1,0 +1,8 @@
+#!/usr/bin/with-contenv sh
+#shellcheck shell=sh
+
+printf "Generating certificate for %s"\n "$TASKD_USERNAME"
+
+cd /opt/src/taskd/pki || exit 1
+./generate.client "$TASKD_USERNAME"
+mv "$TASKD_USERNAME".*.pem /client_certs/
