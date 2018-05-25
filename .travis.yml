@@ -3,6 +3,9 @@ jobs:
   include:
     - stage: test
       cache: ccache
+      dist: xenial
+      sudo: required
+      group: edge
       addons:
         apt:
           packages:
