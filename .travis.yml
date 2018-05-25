@@ -31,8 +31,8 @@ jobs:
         - export USER_UUID=$(docker-compose exec taskserver sh -c 'ls -1 "$TASKDDATA/orgs/$TASKD_ORGNAME/users"')
         - printf "new user UUID is $USER_UUID"
         - yes | task version
-        # - cp taskserver/client_certs/client.cert.pem.example ~/.task/client.cert.pem
-        # - cp taskserver/client_certs/client.key.pem.example ~/.task/client.key.pem
+        # wait for the certs to be created
+        - sleep 15
         - cp taskserver/client_certs/client.cert.pem ~/.task/client.cert.pem
         - cp taskserver/client_certs/client.key.pem ~/.task/client.key.pem
         - cp taskserver/client_certs/ca.cert.pem ~/.task/ca.cert.pem
@@ -44,6 +44,6 @@ jobs:
         - yes | task config taskd.credentials -- My Org/user/$USER_UUID
         - yes | task config taskd.trust -- ignore hostname
         - task diagnostics
-        - yes | task sync init
+        - yes | task rc.debug=1 rc.debug.tls=2 sync init
       after_script:
         - docker-compose logs
