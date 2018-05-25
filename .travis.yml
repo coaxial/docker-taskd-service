@@ -3,12 +3,16 @@ jobs:
   include:
     - stage: test
       cache: ccache
+      sudo: required
       addons:
         apt:
           update: true
           packages:
             - cmake
+            - g++
+            - libgnutls28-dev
             - gnutls-bin
+            - uuid-dev
       services:
         - docker
       install:
