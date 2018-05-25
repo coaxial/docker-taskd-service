@@ -33,7 +33,6 @@ jobs:
         - yes | task version
         # - cp taskserver/client_certs/client.cert.pem.example ~/.task/client.cert.pem
         # - cp taskserver/client_certs/client.key.pem.example ~/.task/client.key.pem
-        - ls -clash taskserver/server_certs/
         - cp taskserver/client_certs/client.cert.pem ~/.task/client.cert.pem
         - cp taskserver/client_certs/client.key.pem ~/.task/client.key.pem
         - cp taskserver/client_certs/ca.cert.pem ~/.task/ca.cert.pem

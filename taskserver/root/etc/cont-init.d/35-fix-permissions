@@ -1,7 +1,7 @@
 #!/usr/bin/with-contenv sh
 #shellcheck shell=sh
 
-# chown -R taskd:taskd "$TASKDDATA"
+chown -R taskd:taskd "$TASKDDATA"
 # chmod 600 "$TASKDDATA"/*
 # docker-compose can't read them otherwise when building
 chmod +r /client_certs/*
