@@ -13,6 +13,7 @@ else
   chown taskd "$TASKDDATA/taskd.pid"
   taskd add org "$TASKD_ORGNAME"
   taskd add user "$TASKD_ORGNAME" "$TASKD_USERNAME" | grep -oE '[a-f0-9\-]{36}'
+  taskd add --debug user "$TASKD_ORGNAME" "$TASKD_USERNAME"
   taskd config --force server      "$TASKD_DOMAIN:53589"
   taskd config --force log         "$TASKDDATA"/taskd.log
   taskd config --force pid.file    "$TASKDDATA"/taskd.pid
