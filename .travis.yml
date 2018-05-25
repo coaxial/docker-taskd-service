@@ -3,13 +3,12 @@ jobs:
   include:
     - stage: test
       cache: ccache
-      dist: xenial
-      sudo: required
-      group: edge
       addons:
         apt:
+          update: true
           packages:
             - cmake
+            - gnutls-bin
       services:
         - docker
       install:
