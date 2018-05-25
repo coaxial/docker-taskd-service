@@ -1,14 +1,17 @@
 #!/usr/bin/with-contenv sh
 #shellcheck shell=sh
 
+printf "Generating certificates\n"
+cd /opt/src/taskd/pki || exit 1
+# generate self-signed certs
+./generate
+# move generated certs in place
+cp ./client.*.pem /ssl_certs/
+cp ./ca.*.pem /ssl_certs/
+cp ./ca.cert.pem /client_certs/
+
 if [ "$LE_DISABLE" = "true" ] && [ ! -s /ssl_certs/domain.key ]; then
-  printf "Generating self-signed server certs\n"
-  cd /opt/src/taskd/pki || exit 1
-  # generate self-signed certs
-  ./generate
-  # move generated certs in place
-  mv ./*.pem /ssl_certs/
-  mv /ssl_certs/server.key.pem /ssl_certs/domain.key
-  mv /ssl_certs/server.cert.pem /ssl_certs/domain.crt
-  cp /ssl_certs/ca.cert.pem /client_certs/ca.cert.pem
+  printf "Lets Encrypt disabled, using self-signed server certs\n"
+  cp ./server.key.pem /ssl_certs/domain.key
+  cp ./server.cert.pem /ssl_certs/domain.crt
 fi

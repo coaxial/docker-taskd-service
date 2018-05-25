@@ -20,5 +20,5 @@ else
   taskd config --force server.cert "$TASKDDATA"/server.cert.pem
   taskd config --force server.crl  "$TASKDDATA"/server.crl.pem
   taskd config --force ca.cert     "$TASKDDATA"/ca.cert.pem
-  taskd config --force trust "allow all"
+  # taskd config --force trust "allow all"
 fi

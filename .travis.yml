@@ -37,7 +37,7 @@ jobs:
         - cp taskserver/client_certs/user.key.pem ~/.task/
         - cp taskserver/client_certs/ca.cert.pem ~/.task/ca.cert.pem
         - ls -clash ~/.task
-        - yes | task config taskd.certificate -- ~/.task/client.cert.pem
+        - yes | task config taskd.certificate -- ~/.task/user.cert.pem
         - yes | task config taskd.key -- ~/.task/user.key.pem
         - yes | task config taskd.ca -- ~/.task/ca.cert.pem
         - yes | task config taskd.server -- localhost:53589
