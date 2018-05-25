@@ -28,7 +28,7 @@ jobs:
         - cd -
       script:
         - docker-compose exec taskserver sh -c 'echo $TASKDDATA'
-        - export USER_UUID=$(docker-compose exec taskserver sh -c 'ls -1 "$TASKDDATA/orgs/$TASKD_ORGNAME/users"')
+        - export USER_UUID=$(docker-compose exec taskserver sh -c 'ls -1 "$TASKDDATA/orgs/$TASKD_ORGNAME/users"' | sed 's/\r//')
         - printf "new user UUID is $USER_UUID"
         - yes | task version
         # wait for the certs to be created
