@@ -45,6 +45,7 @@ jobs:
         - yes | task config taskd.trust -- ignore hostname
         - task add test task
         - task diagnostics
+        - cat ~/.taskrc
         - yes | task rc.debug=1 rc.debug.tls=2 sync init
       after_script:
         - docker-compose logs
