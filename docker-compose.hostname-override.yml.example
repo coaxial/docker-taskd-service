@@ -3,3 +3,7 @@ version: '3'
 services:
   taskserver:
     hostname: taskd.example.com
+    networks:
+      default:
+        aliases:
+          - taskd.example.com
