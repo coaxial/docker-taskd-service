@@ -15,7 +15,7 @@ else
   chown taskd "$TASKDDATA/taskd.pid"
   taskd add org "$TASKD_ORGNAME"
   taskd add user "$TASKD_ORGNAME" "$TASKD_USERNAME"
-  taskd config --force server      "$0.0.0.0:53589"
+  taskd config --force server      "0.0.0.0:53589"
   taskd config --force log         "$TASKDDATA"/taskd.log
   taskd config --force pid.file    "$TASKDDATA"/taskd.pid
   taskd config --force server.key  "$TASKDDATA"/server.key.pem
