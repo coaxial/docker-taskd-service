@@ -12,7 +12,7 @@ jobs:
         - sleep 20
         # extract user uuid, needed to configure client
         - docker-compose exec taskserver sh -c 'echo ${TASKDDATA}'
-        - export USER_UUID=$(docker-compose exec taskserver sh -c 'ls --color=never -1 "${TASKDDATA}/orgs/${TASKD_ORGNAME}/users"')
+        - export USER_UUID=$(docker-compose exec taskserver sh -c 'ls --color=never -1 "${TASKDDATA}/orgs/${TASKD_ORGNAME}/users"' | sed 's/\r//')
         - printf "new user UUID is ${USER_UUID}"
         # configure client
         - docker create
