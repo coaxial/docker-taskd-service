@@ -30,6 +30,7 @@ jobs:
         - docker exec -it tw sh -c "yes | task config taskd.server -- taskserver:53589"
         - docker exec -it tw sh -c "yes | task config taskd.credentials -- My Org/user/${USER_UUID}"
         - docker exec -it tw sh -c "yes | task diagnostics"
+        - docker exec -it tw sh -c "cat ~/.taskrc"
       script:
         - docker exec -it tw sh -c "yes | task sync init"
       after_script:
