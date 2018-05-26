@@ -1,9 +1,6 @@
 #!/usr/bin/with-contenv sh
 #shellcheck shell=sh
 
-cp /ssl_certs/domain.crt "$TASKDDATA"
-cp /ssl_certs/domain.key "$TASKDDATA"
+cp /ssl_certs/server.*.pem "$TASKDDATA"
 cp /client_certs/*.pem "$TASKDDATA"
-mv "$TASKDDATA/domain.key" "$TASKDDATA/server.key.pem"
-mv "$TASKDDATA/domain.crt" "$TASKDDATA/server.cert.pem"
 # chown -R taskd:taskd "$TASKDDATA"

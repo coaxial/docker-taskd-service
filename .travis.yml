@@ -16,11 +16,10 @@ jobs:
       services:
         - docker
       install:
+        # setup service
         - cp taskserver/taskserver.env.example taskserver/taskserver.env
-        - cp certbot/certbot.env.example certbot/certbot.env
-        - echo 'LE_DISABLE=true' >> taskserver/taskserver.env
-        - echo 'LE_DISABLE=true' >> certbot/certbot.env
         - docker-compose up -d
+        # compile tw from source because ubuntu 14.04 is ancient
         - curl -L https://taskwarrior.org/download/task-2.5.1.tar.gz -o /tmp/task.tar.gz
         - mkdir /tmp/task
         - tar xzf /tmp/task.tar.gz -C /tmp/task --strip 1
@@ -38,14 +37,14 @@ jobs:
         - sleep 15
         - cp taskserver/client_certs/user.cert.pem ~/.task/
         - cp taskserver/client_certs/user.key.pem ~/.task/
-        - cp taskserver/client_certs/ca.cert.pem ~/.task/ca.cert.pem
+        - cp taskserver/client_certs/ca.cert.pem ~/.task/
         - ls -clash ~/.task
         - yes | task config taskd.certificate -- ~/.task/user.cert.pem
         - yes | task config taskd.key -- ~/.task/user.key.pem
-        # - yes | task config taskd.ca -- ~/.task/ca.cert.pem
+        - yes | task config taskd.ca -- ~/.task/ca.cert.pem
         - yes | task config taskd.server -- localhost:53589
         - yes | task config taskd.credentials -- My Org/user/$USER_UUID
-        - yes | task config taskd.trust -- "allow all"
+        # - yes | task config taskd.trust -- "allow all"
         - task add test task
         - task diagnostics
         - cat ~/.taskrc

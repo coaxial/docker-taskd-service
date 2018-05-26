@@ -1,4 +1,0 @@
-#!/usr/bin/with-contenv sh
-#shellcheck shell=sh
-
-exec snooze -D/7 /scripts/certbot_svc

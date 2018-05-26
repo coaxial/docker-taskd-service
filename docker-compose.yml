@@ -12,15 +12,6 @@ services:
       - ./taskserver/client_certs:/client_certs
       - ssl_certs:/ssl_certs
 
-  certbot:
-    build: certbot/
-    env_file:
-      - certbot/certbot.env
-    volumes:
-      - ssl_certs:/ssl_certs
-    ports:
-      - "443:443"
-
 volumes:
   taskddata:
   ssl_certs:

@@ -7,11 +7,6 @@ cd /opt/src/taskd/pki || exit 1
 ./generate
 # move generated certs in place
 cp ./client.*.pem /ssl_certs/
+cp ./server.*.pem /ssl_certs/
 cp ./ca.*.pem /ssl_certs/
 cp ./ca.cert.pem /client_certs/
-
-if [ "$LE_DISABLE" = "true" ] && [ ! -s /ssl_certs/domain.key ]; then
-  printf "Lets Encrypt disabled, using self-signed server certs\n"
-  cp ./server.key.pem /ssl_certs/domain.key
-  cp ./server.cert.pem /ssl_certs/domain.crt
-fi
