@@ -2,54 +2,35 @@
 jobs:
   include:
     - stage: test
-      cache: ccache
-      sudo: required
-      addons:
-        apt:
-          update: true
-          packages:
-            - cmake
-            - g++
-            - libgnutls28-dev
-            - gnutls-bin
-            - uuid-dev
       services:
         - docker
       install:
         # setup service
         - cp taskserver/taskserver.env.example taskserver/taskserver.env
         - docker-compose up -d
-        # compile tw from source because ubuntu 14.04 is ancient, and the taskwarrior it ships with is ancient too
-        - curl -L https://taskwarrior.org/download/task-2.5.1.tar.gz -o /tmp/task.tar.gz
-        - mkdir /tmp/task
-        - tar xzf /tmp/task.tar.gz -C /tmp/task --strip 1
-        - cd /tmp/task
-        - cmake -DCMAKE_BUILD_TYPE=release .
-        - make
-        - sudo make install
-        - cd -
-      script:
+        # wait for taskd to come up
+        - sleep 20
         # extract user uuid, needed to configure client
-        - docker-compose exec taskserver sh -c 'echo $TASKDDATA'
-        - export USER_UUID=$(docker-compose exec taskserver sh -c 'ls -1 "$TASKDDATA/orgs/$TASKD_ORGNAME/users"' | sed 's/\r//')
-        - printf "new user UUID is $USER_UUID"
-        - yes | task version
-        # wait for the certs to be created
-        - sleep 15
+        - docker-compose exec taskserver sh -c 'echo ${TASKDDATA}'
+        - export USER_UUID=$(docker-compose exec taskserver sh -c 'ls --color=never -1 "${TASKDDATA}/orgs/${TASKD_ORGNAME}/users"')
+        - printf "new user UUID is ${USER_UUID}"
         # configure client
-        - cp taskserver/client_certs/user.cert.pem ~/.task/
-        - cp taskserver/client_certs/user.key.pem ~/.task/
-        - cp taskserver/client_certs/ca.cert.pem ~/.task/
-        - ls -clash ~/.task
-        - yes | task config taskd.certificate -- ~/.task/user.cert.pem
-        - yes | task config taskd.key -- ~/.task/user.key.pem
-        - yes | task config taskd.ca -- ~/.task/ca.cert.pem
-        - yes | task config taskd.server -- localhost:53589
-        - yes | task config taskd.credentials -- My Org/user/$USER_UUID
-        # - yes | task config taskd.trust -- "allow all"
-        - task add test task
-        - task diagnostics
-        - cat ~/.taskrc
-        - yes | task rc.debug=1 rc.debug.tls=2 sync init
+        - docker create
+          --name tw
+          --volume `pwd`/taskserver/client_certs:/client_certs:ro
+          --network dockertaskdservice_default
+          alpine
+          yes
+        - docker start tw
+        - docker exec -it tw sh -c "apk --no-cache add task"
+        - docker exec -it tw sh -c "yes | task version"
+        - docker exec -it tw sh -c "yes | task config taskd.certificate -- /client_certs/user.cert.pem"
+        - docker exec -it tw sh -c "yes | task config taskd.key -- /client_certs/user.key.pem"
+        - docker exec -it tw sh -c "yes | task config taskd.ca -- /client_certs/ca.cert.pem"
+        - docker exec -it tw sh -c "yes | task config taskd.server -- taskserver:53589"
+        - docker exec -it tw sh -c "yes | task config taskd.credentials -- My Org/user/${USER_UUID}"
+        - docker exec -it tw sh -c "yes | task diagnostics"
+      script:
+        - docker exec -it tw sh -c "yes | task sync init"
       after_script:
         - docker-compose logs
