@@ -7,7 +7,9 @@ jobs:
       install:
         # setup service
         - cp taskserver/taskserver.env.example taskserver/taskserver.env
-        - docker-compose up -d
+        - cp docker-compose.hostname-override.yml.example docker-compose.hostname-override.yml
+        - sed -i 's/taskd\.example\.com/ts.local/' docker-compose.hostname-override.yml
+        - docker-compose -f docker-compose.yml -f docker-compose.hostname-override.yml up -d
         # wait for taskd to come up
         - sleep 20
         # extract user uuid, needed to configure client
@@ -27,7 +29,7 @@ jobs:
         - docker exec -it tw sh -c "yes | task config taskd.certificate -- /client_certs/user.cert.pem"
         - docker exec -it tw sh -c "yes | task config taskd.key -- /client_certs/user.key.pem"
         - docker exec -it tw sh -c "yes | task config taskd.ca -- /client_certs/ca.cert.pem"
-        - docker exec -it tw sh -c "yes | task config taskd.server -- taskserver:53589"
+        - docker exec -it tw sh -c "yes | task config taskd.server -- ts.local:53589"
         - docker exec -it tw sh -c "yes | task config taskd.credentials -- My Org/user/${USER_UUID}"
         - docker exec -it tw sh -c "yes | task diagnostics"
       script:
