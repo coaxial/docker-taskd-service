@@ -19,7 +19,7 @@ jobs:
         # setup service
         - cp taskserver/taskserver.env.example taskserver/taskserver.env
         - docker-compose up -d
-        # compile tw from source because ubuntu 14.04 is ancient
+        # compile tw from source because ubuntu 14.04 is ancient, and the taskwarrior it ships with is ancient too
         - curl -L https://taskwarrior.org/download/task-2.5.1.tar.gz -o /tmp/task.tar.gz
         - mkdir /tmp/task
         - tar xzf /tmp/task.tar.gz -C /tmp/task --strip 1
@@ -29,12 +29,14 @@ jobs:
         - sudo make install
         - cd -
       script:
+        # extract user uuid, needed to configure client
         - docker-compose exec taskserver sh -c 'echo $TASKDDATA'
         - export USER_UUID=$(docker-compose exec taskserver sh -c 'ls -1 "$TASKDDATA/orgs/$TASKD_ORGNAME/users"' | sed 's/\r//')
         - printf "new user UUID is $USER_UUID"
         - yes | task version
         # wait for the certs to be created
         - sleep 15
+        # configure client
         - cp taskserver/client_certs/user.cert.pem ~/.task/
         - cp taskserver/client_certs/user.key.pem ~/.task/
         - cp taskserver/client_certs/ca.cert.pem ~/.task/
