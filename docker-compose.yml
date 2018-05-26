@@ -3,6 +3,7 @@ version: '3'
 services:
   taskserver:
     build: taskserver/
+    hostname: taskserver
     env_file:
       - taskserver/taskserver.env
     ports:

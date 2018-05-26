@@ -1,7 +1,8 @@
 #!/usr/bin/with-contenv sh
 #shellcheck shell=sh
 
+# make the taskd data dir rw for the user running taskd
 chown -R taskd:taskd "$TASKDDATA"
-# chmod 600 "$TASKDDATA"/*
-# docker-compose can't read them otherwise when building
+# make client certs readable for every user to work around UID and GID mapping
+# inconsistencies across hosts
 chmod +r /client_certs/*

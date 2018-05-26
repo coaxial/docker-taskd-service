@@ -1,9 +1,20 @@
 #!/usr/bin/with-contenv sh
 #shellsheck shell=sh
 
-
 printf "Installing the certificate generator\n"
 apk --no-cache add curl gnutls-utils
 mkdir -p /opt/src/taskd
+# get a copy of the repo wich also contains the certificate generation scripts
 curl -sSL https://api.github.com/repos/gothenburgbitfactory/taskserver/tarball/master -o /tmp/taskd.tar.gz
 tar xzf /tmp/taskd.tar.gz -C /opt/src/taskd --strip 1
+# set the variables for the certs to be generated (as defined in
+# taskserver.env)
+{
+  echo "BITS=$TASKD_CERT_BITS";
+  echo "EXPIRATION_DAYS=$TASKD_CERT_EXPIRATION_DAYS";
+  echo "ORGANIZATION=\"$TASKD_CERT_ORGANIZATION\"";
+  echo "CN=$(hostname -f)";
+  echo "COUNTRY=$TASKD_CERT_COUNTRY";
+  echo "STATE=\"$TASKD_CERT_STATE\"";
+  echo "LOCALITY=\"$TASKD_CERT_LOCALITY\"";
+} > /opt/src/taskd/pki/vars

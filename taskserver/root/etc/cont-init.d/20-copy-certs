@@ -1,6 +1,6 @@
 #!/usr/bin/with-contenv sh
 #shellcheck shell=sh
 
+# Regroup all certificates where taskd will look for them
 cp /ssl_certs/server.*.pem "$TASKDDATA"
 cp /client_certs/*.pem "$TASKDDATA"
-# chown -R taskd:taskd "$TASKDDATA"

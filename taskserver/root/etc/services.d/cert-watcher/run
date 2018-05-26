@@ -1,9 +1,0 @@
-#!/usr/bin/with-contenv sh
-#shellcheck shell=sh
-
-# this reloads the taskserver every time the certificates are updated (via a SIGHUP, using s6's signaling command
-
-# the command is already quoted, no need to quote the var inside it
-#shellcheck disable=SC2086
-# exec fswatch -o "$TASKDDATA"/*.pem | xargs -n 1 kill -1 "$(cat $TASKDDATA/taskd.pid)"
-exec fswatch -o "$TASKDDATA"/*.pem | xargs -n 1 s6-svc -h /var/run/s6/services/taskd

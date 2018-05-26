@@ -1,4 +1,5 @@
 #!/usr/bin/with-contenv sh
 #shellcheck shell=sh
 
+# write a copy of the log in the container's console for easier monitoring/inspection
 exec tail -F "$TASKDDATA/taskd.log"
