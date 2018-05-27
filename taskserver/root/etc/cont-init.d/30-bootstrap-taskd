@@ -14,7 +14,11 @@ else
   chown taskd "$TASKDDATA/taskd.log"
   chown taskd "$TASKDDATA/taskd.pid"
   taskd add org "$TASKD_ORGNAME"
-  taskd add user "$TASKD_ORGNAME" "$TASKD_USERNAME"
+  # use tee to still write to stdout but also save output to file
+  taskd add user "$TASKD_ORGNAME" "$TASKD_USERNAME" | tee /client_certs/"$TASKD_USERNAME-uuid"
+  # now remove the rest of the output and only keep the uuid, useful for
+  # configuring taskwarrior on the client machine
+  sed -i '/.*\([0-9a-f\-]\{36\}\)/!d;s//\1/g' /client_certs/"$TASKD_USERNAME-uuid"
   taskd config --force server      "$(hostname -f):53589"
   taskd config --force log         "$TASKDDATA"/taskd.log
   taskd config --force pid.file    "$TASKDDATA"/taskd.pid
