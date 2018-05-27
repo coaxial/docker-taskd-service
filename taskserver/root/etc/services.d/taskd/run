@@ -1,0 +1,5 @@
+#!/usr/bin/with-contenv sh
+#shellcheck shell=sh
+
+# user taskd will run the taskserver, running as root is asking for trouble
+exec s6-setuidgid taskd taskd server

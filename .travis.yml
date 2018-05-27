@@ -1,0 +1,39 @@
+---
+jobs:
+  include:
+    - stage: test
+      services:
+        - docker
+      install:
+        # setup service
+        - cp taskserver/taskserver.env.example taskserver/taskserver.env
+        - cp docker-compose.hostname-override.yml.example docker-compose.hostname-override.yml
+        - sed -i 's/taskd\.example\.com/ts.local/' docker-compose.hostname-override.yml
+        - docker-compose -f docker-compose.yml -f docker-compose.hostname-override.yml up -d
+        # wait for taskd to come up
+        - sleep 10
+        # extract user uuid, needed to configure client
+        - docker-compose exec taskserver sh -c 'echo ${TASKDDATA}'
+        - export USER_UUID=$(cat ./taskserver/client_certs/user-uuid)
+        - printf "new user's UUID is ${USER_UUID}"
+        # configure client
+        - docker create
+          --name tw
+          --volume `pwd`/taskserver/client_certs:/client_certs:ro
+          --network dockertaskdservice_default
+          alpine
+          yes
+        - docker start tw
+        - docker exec -it tw sh -c "apk --no-cache add task"
+        - docker exec -it tw sh -c "yes | task version"
+        - docker exec -it tw sh -c "yes | task config taskd.certificate -- /client_certs/user.cert.pem"
+        - docker exec -it tw sh -c "yes | task config taskd.key -- /client_certs/user.key.pem"
+        - docker exec -it tw sh -c "yes | task config taskd.ca -- /client_certs/ca.cert.pem"
+        - docker exec -it tw sh -c "yes | task config taskd.server -- ts.local:53589"
+        - docker exec -it tw sh -c "yes | task config taskd.credentials -- My Org/user/${USER_UUID}"
+        - docker exec -it tw sh -c "yes | task diagnostics"
+      script:
+        - docker exec -it tw sh -c "yes | task sync init"
+      after_script:
+        - docker exec -it tw sh -c "cat ~/.taskrc"
+        - docker-compose logs

@@ -1,0 +1,18 @@
+---
+version: '3'
+services:
+  taskserver:
+    build: taskserver/
+    hostname: taskserver
+    env_file:
+      - taskserver/taskserver.env
+    ports:
+      - "53589:53589"
+    volumes:
+      - taskddata:/var/taskd
+      - ./taskserver/client_certs:/client_certs
+      - ssl_certs:/ssl_certs
+
+volumes:
+  taskddata:
+  ssl_certs:

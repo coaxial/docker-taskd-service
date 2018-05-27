@@ -1,0 +1,13 @@
+#!/usr/bin/with-contenv sh
+#shellcheck shell=sh
+
+# Use the generate script to make the CA and server certificates
+printf "Generating certificates\n"
+cd /opt/src/taskd/pki || exit 1
+./generate
+# move generated certs to volumes so they're not lost when the container is
+# destroyed, and so that they can be accessed from other containers if needed
+cp ./client.*.pem /ssl_certs/
+cp ./server.*.pem /ssl_certs/
+cp ./ca.*.pem /ssl_certs/
+cp ./ca.cert.pem /client_certs/

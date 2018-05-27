@@ -1,0 +1,16 @@
+---
+version: '3'
+services:
+  taskserver:
+    # this sets the container's hostname (required for certificate validation)
+    hostname: taskd.example.com
+
+    # and this makes the hostname available on the docker network
+    # not strictly necessary if the taskserver container is directly reachable
+    # via its FQDN (i.e. not running in a travis-ci build for instance)
+    # if taskd.example.com directly hits the taskserver container, the
+    # following section can safely be removed
+    networks:
+      default:
+        aliases:
+          - taskd.example.com
