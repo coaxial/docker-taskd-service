@@ -34,7 +34,7 @@ The generated user certificates will be located at `taskserver/client_certs` as 
 
 ## About the container
 
-The container is based on my `coaxial/taskserver` image which is based on Alpine. The base image is rebuilt whenever `alpine` is updated to ensure an up to date environment.
+The container is based on my [`coaxial/s6-base`](https://hub.docker.com/r/coaxial/s6-base) image which is based on Alpine and includes s6-overlay. The base image is rebuilt whenever `alpine` is updated to ensure an up to date environment.
 
 For process supervision, I'm using s6-overlay. The taskd service is defined at `taskserver/root/etc/services.d/taskd/run`. Several scripts in `taskserver/root/etc/cont-init.d` generate the certificates and configures the server before it starts. The logs are writted to the `taskddata` volume, in a `taskd.log` file. To also have the logs output to the container's stdout, I set up a `taskd-log` service at `taskserver/root/etc/services.d/taskd-log/run` which tails the log file to stdout.
 
