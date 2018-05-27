@@ -1,5 +1,7 @@
 # taskd docker service
 
+[![Build Status](https://travis-ci.org/coaxial/docker-taskd-service.svg?branch=master)](https://travis-ci.org/coaxial/docker-taskd-service)
+
 A [taskwarrior](https://taskwarrior.org) taskserver in a ~~box~~ container.
 
 ## Getting started
