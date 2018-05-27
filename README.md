@@ -26,7 +26,9 @@ As a workaround, the actual FQDN can be overridden using `docker-compose.hostnam
 
 After editing the variables and overriding the FQDN, start the service:
 
-`$ docker-compose -f docker-compose.yml -f docker-compose.hostname-override.yml up -d`
+`$ docker-compose pull && docker-compose -f docker-compose.yml -f docker-compose.hostname-override.yml --build up -d`
+
+This command also works if you want to update an existing deployment to the latest version.
 
 The generated user certificates will be located at `taskserver/client_certs` as `username.{cert,key}.pem` and the UUID in the `username-uuid` file. The directory also contains the `ca.cert.pem` file.
 
