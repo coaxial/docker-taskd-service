@@ -3,6 +3,7 @@ version: '3'
 services:
   taskserver:
     build: taskserver/
+    restart: always
     hostname: taskserver
     env_file:
       - taskserver/taskserver.env

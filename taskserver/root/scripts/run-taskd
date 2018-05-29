@@ -1,5 +1,0 @@
-#!/usr/bin/with-contenv sh
-#shellcheck shell=sh
-
-# generate config if doesn't exist
-# check certs and restart if they change
