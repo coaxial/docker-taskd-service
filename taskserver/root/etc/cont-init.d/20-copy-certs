@@ -6,10 +6,12 @@ if [ -s "$TASKDDATA/server.cert.pem" ]; then
   printf "Server certificates found in %s, not overwriting\n" "$TASKDDATA"
   # put the certs in the ssl_certs volume to avoid mismatch between /ssl_certs
   # and the ones the server is using
-  cp "$TASKDDATA/server.*.pem" /ssl_certs
+  cp "$TASKDDATA/server.key.pem" /ssl_certs
+  cp "$TASKDDATA/server.cert.pem" /ssl_certs
 else
   printf "No server certificates in %s, copying them over...\n" "$TASKDDATA"
-  cp /ssl_certs/server.*.pem "$TASKDDATA"
+  cp /ssl_certs/server.key.pem "$TASKDDATA"
+  cp /ssl_certs/server.cert.pem "$TASKDDATA"
 fi
 
 if [ -s "$TASKDDATA/$TASKD_USERNAME.cert.pem" ]; then
@@ -17,8 +19,11 @@ if [ -s "$TASKDDATA/$TASKD_USERNAME.cert.pem" ]; then
   # put the certs in the client_certs volume to avoid mismatch between
   # /client_certs and the ones the server is using
   cp "$TASKDDATA/ca.cert.pem" /client_certs
-  cp "$TASKDDATA/$TASKD_USERNAME.*.pem" /client_certs
+  cp "$TASKDDATA/$TASKD_USERNAME.key.pem" /client_certs
+  cp "$TASKDDATA/$TASKD_USERNAME.cert.pem" /client_certs
 else
   printf "No certificates for user %s in %s, copying them over...\n" "$TASKD_USERNAME" "$TASKDDATA"
-  cp /client_certs/*.pem "$TASKDDATA"
+  cp /client_certs/ca.cert.pem "$TASKDDATA"
+  cp "/client_certs/$TASKD_USERNAME.key.pem" "$TASKDDATA"
+  cp "/client_certs/$TASKD_USERNAME.cert.pem" "$TASKDDATA"
 fi
