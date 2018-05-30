@@ -2,5 +2,16 @@
 #shellcheck shell=sh
 
 # Regroup all certificates where taskd will look for them
-cp /ssl_certs/server.*.pem "$TASKDDATA"
-cp /client_certs/*.pem "$TASKDDATA"
+if [ -s "$TASKDDATA/server.cert.pem" ]; then
+  printf "No server certificates in %s, copying them over...\n" "$TASKD_USERNAME"
+  cp /ssl_certs/server.*.pem "$TASKDDATA"
+else
+  printf "Server certificates found in %s, not overwriting\n" "$TASKDDATA"
+fi
+
+if [ -s "$TASKDDATA/$TASKD_USERNAME.cert.pem" ]; then
+  printf "No user certificates in %s, copying them over...\n" "$TASKD_USERNAME"
+  cp /client_certs/*.pem "$TASKDDATA"
+else
+  printf "Client certificates found in %s, not overwriting\n" "$TASKDDATA"
+fi
