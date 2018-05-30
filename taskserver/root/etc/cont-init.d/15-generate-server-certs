@@ -2,6 +2,8 @@
 #shellcheck shell=sh
 
 if [ -s "$TASKDDATA/ca.cert.pem" ]; then
+  printf "Server certificates found, not generating any.\n"
+else
   # Use the generate script to make the CA and server certificates
   printf "No server certificates found, generating them...\n"
   cd /opt/src/taskd/pki || exit 1
@@ -12,6 +14,4 @@ if [ -s "$TASKDDATA/ca.cert.pem" ]; then
   cp ./server.*.pem /ssl_certs/
   cp ./ca.*.pem /ssl_certs/
   cp ./ca.cert.pem /client_certs/
-else
-  printf "Server certificates found, not generating any.\n"
 fi

@@ -3,22 +3,22 @@
 
 # Regroup all certificates where taskd will look for them
 if [ -s "$TASKDDATA/server.cert.pem" ]; then
-  printf "No server certificates in %s, copying them over...\n" "$TASKDDATA"
-  cp /ssl_certs/server.*.pem "$TASKDDATA"
-else
   printf "Server certificates found in %s, not overwriting\n" "$TASKDDATA"
   # put the certs in the ssl_certs volume to avoid mismatch between /ssl_certs
   # and the ones the server is using
   cp "$TASKDDATA/server.*.pem" /ssl_certs
+else
+  printf "No server certificates in %s, copying them over...\n" "$TASKDDATA"
+  cp /ssl_certs/server.*.pem "$TASKDDATA"
 fi
 
 if [ -s "$TASKDDATA/$TASKD_USERNAME.cert.pem" ]; then
-  printf "No certificates for user %s in %s, copying them over...\n" "$TASKD_USERNAME" "$TASKDDATA"
-  cp /client_certs/*.pem "$TASKDDATA"
-else
   printf "Client certificates for user %s found in %s, not overwriting\n" "$TASKD_USERNAME" "$TASKDDATA"
   # put the certs in the client_certs volume to avoid mismatch between
   # /client_certs and the ones the server is using
   cp "$TASKDDATA/ca.cert.pem" /client_certs
   cp "$TASKDDATA/$TASKD_USERNAME.*.pem" /client_certs
+else
+  printf "No certificates for user %s in %s, copying them over...\n" "$TASKD_USERNAME" "$TASKDDATA"
+  cp /client_certs/*.pem "$TASKDDATA"
 fi
