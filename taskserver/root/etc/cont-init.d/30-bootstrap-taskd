@@ -22,8 +22,10 @@ else
   taskd config --force ca.cert     "$TASKDDATA"/ca.cert.pem
 fi
 
-if grep -qrw "/var/taskd/orgs/$TASKD_ORGNAME/users" -e "user=$TASKD_USERNAME"; then
+if grep -qrw "$TASKDDATA/orgs/$TASKD_ORGNAME/users" -e "user=$TASKD_USERNAME"; then
   printf "User %s already exists, not recreating it\n" "$TASKD_USERNAME"
+  # extract the UUID anyway
+  grep -rw "$TASKDDATA/orgs/$TASKD_ORGNAME/users" -e "user=$TASKD_USERNAME" | sed '/.*\([0-9a-f\-]\{36\}\).*/!d;s//\1/g' > /client_certs/"$TASKD_USERNAME-uuid"
 else
   printf "User %s didn't exist, creating it...\n" "$TASKD_USERNAME"
   # use tee to still write to stdout but also save output to file
