@@ -22,7 +22,7 @@ else
   taskd config --force ca.cert     "$TASKDDATA"/ca.cert.pem
 fi
 
-if find "$TASKDDATA/orgs" -name "$TASKD_ORGNAME"; then
+if find "$TASKDDATA/orgs" -name "$TASKD_ORGNAME" | grep "$TASKD_ORGNAME"; then
   printf "Organization %s found, not regenerating it\n" "$TASKD_ORGNAME"
 else
   printf "Organization %s not found, generating it...\n" "$TASKD_ORGNAME"
