@@ -4,21 +4,15 @@
 
 # if we already have a config file, we don't want to overwrite it
 if [ -s "$TASKDDATA/config" ]; then
-  printf "$TASKDDATA/config file found, skipping bootstrap\n"
+  printf "%s/config file found, skipping bootstrap\n" "$TASKDDATA"
 else
-  printf "$TASKDDATA/config file not found, bootstrapping taskd\n"
+  printf "%s/config file not found, bootstrapping taskd\n" "$TASKDDATA"
   # configure taskd, create the organization and user
   taskd init
   touch "$TASKDDATA/taskd.log"
   touch "$TASKDDATA/taskd.pid"
   chown taskd "$TASKDDATA/taskd.log"
   chown taskd "$TASKDDATA/taskd.pid"
-  taskd add org "$TASKD_ORGNAME"
-  # use tee to still write to stdout but also save output to file
-  taskd add user "$TASKD_ORGNAME" "$TASKD_USERNAME" | tee /client_certs/"$TASKD_USERNAME-uuid"
-  # now remove the rest of the output and only keep the uuid, useful for
-  # configuring taskwarrior on the client machine
-  sed -i '/.*\([0-9a-f\-]\{36\}\)/!d;s//\1/g' /client_certs/"$TASKD_USERNAME-uuid"
   taskd config --force server      "$(hostname -f):53589"
   taskd config --force log         "$TASKDDATA"/taskd.log
   taskd config --force pid.file    "$TASKDDATA"/taskd.pid
@@ -26,4 +20,24 @@ else
   taskd config --force server.cert "$TASKDDATA"/server.cert.pem
   taskd config --force server.crl  "$TASKDDATA"/server.crl.pem
   taskd config --force ca.cert     "$TASKDDATA"/ca.cert.pem
+fi
+
+if find "$TASKDDATA/orgs" -name "$TASKD_ORGNAME" | grep "$TASKD_ORGNAME"; then
+  printf "Organization %s found, not regenerating it\n" "$TASKD_ORGNAME"
+else
+  printf "Organization %s not found, generating it...\n" "$TASKD_ORGNAME"
+  taskd add org "$TASKD_ORGNAME"
+fi
+
+if grep -qrw "$TASKDDATA/orgs/$TASKD_ORGNAME/users" -e "user=$TASKD_USERNAME"; then
+  printf "User %s already exists, not recreating it\n" "$TASKD_USERNAME"
+  # extract the UUID anyway
+  grep -rw "$TASKDDATA/orgs/$TASKD_ORGNAME/users" -e "user=$TASKD_USERNAME" | sed '/.*\([0-9a-f\-]\{36\}\).*/!d;s//\1/g' > /client_certs/"$TASKD_USERNAME-uuid"
+else
+  printf "User %s didn't exist, creating it...\n" "$TASKD_USERNAME"
+  # use tee to still write to stdout but also save output to file
+  taskd add user "$TASKD_ORGNAME" "$TASKD_USERNAME" | tee /client_certs/"$TASKD_USERNAME-uuid"
+  # now remove the rest of the output and only keep the uuid, useful for
+  # configuring taskwarrior on the client machine
+  sed -i '/.*\([0-9a-f\-]\{36\}\)/!d;s//\1/g' /client_certs/"$TASKD_USERNAME-uuid"
 fi
